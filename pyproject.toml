@@ -1,0 +1,25 @@
+[build-system]
+requires = [
+"setuptools>=42",
+"wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "oda-meta-scraper"
+version = "0.1.0"
+description = "A package to scrape metadata from the Open Data Archive"
+readme = "README.md"
+authors = [
+    {name="Radwave"}
+]
+requires-python = ">=3.8"
+license = {file = "LICENSE"}
+dependencies = [
+    "requests",
+    "pandas",
+    "tqdm",
+    "matplotlib"
+]
+
+
