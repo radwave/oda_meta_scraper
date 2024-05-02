@@ -69,7 +69,8 @@ def main():
         if row["PKTFMT"] != "1SFA":
             df.loc[index, "header_errs"] = "Invalid packet format"
             continue
-        start_byte_offset = row["PKTIDX"] * row["PKTSIZE"]
+        pkt_factor = 8 / row["NBITS"]
+        start_byte_offset = row["PKTIDX"] * row["PKTSIZE"] / pkt_factor
         start_sample_offset = start_byte_offset / (
             row["NBITS"] / 8 * row["NPOL"])
         start_time_offset = start_sample_offset / sample_rate
@@ -90,10 +91,10 @@ def main():
             row["PKTIDX"]
             row["PKTSIZE"]
             # blc2_2bit_guppi_57403_PSR_J2326+6113B_0001.0002 is missing scan
-            df.loc[index, 'scan'] = row.get("SCAN", int(scan_num))
+            df.loc[index, 'scan'] = int(scan_num) if pd.isna(row["SCAN"]) else row["SCAN"]
             row["SCANLEN"]
             # blc02_guppi_58060_20295_DIAG_3C123_0001.0000 is missing scan_remaining
-            df.loc[index, 'scan_remaining'] = row.get("SCANREM", -1.0)
+            df.loc[index, 'scan_remaining'] = -1 if pd.isna(row["SCANREM"]) else row["SCANREM"]
             row["TBIN"]
             df.loc[index, "header_errs"] = ""
         except Exception as e:
